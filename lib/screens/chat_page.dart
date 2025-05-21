@@ -62,6 +62,18 @@ class _ChatPageState extends State<ChatPage> {
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         backgroundColor: AppColors.accent,
+        actions: [
+          GestureDetector(
+            onTap: () async {
+              var box = await Hive.openBox('chats');
+              await box.delete('chats');
+              setState(() {
+                chats = [];
+              });
+            },
+            child: Icon(Icons.delete, color: AppColors.primary),
+          ),
+        ],
       ),
       backgroundColor: AppColors.primary,
       body: Column(
