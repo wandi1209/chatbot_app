@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class UserChatWidget extends StatelessWidget {
-  const UserChatWidget({super.key});
+  final String message;
+  const UserChatWidget({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -9,12 +10,15 @@ class UserChatWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Container(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.7,
+          ),
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Colors.grey.shade400,
             borderRadius: BorderRadius.circular(5),
           ),
-          child: Text("Apa yang dimaksud dengan ATOM?"),
+          child: Text(message, style: TextStyle(fontSize: 12)),
         ),
       ],
     );

@@ -20,12 +20,23 @@ class ChatPage extends StatelessWidget {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: BotChatWidget(),
+            padding: EdgeInsets.all(15),
+            child: UserChatWidget(message: "Apa yang dimaksud dengan ATOM?"),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: UserChatWidget(),
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: BotChatWidget(
+              message:
+                  "Atom adalah partikel terkecil dari suatu unsur yang masih mempertahankan sifat kimia dari unsur tersebut.",
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(15),
+            child: UserChatWidget(message: "Jelaskan Secara Rinci"),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: BotChatWidget(message: "Loading..."),
           ),
           Spacer(),
           Container(
@@ -55,7 +66,10 @@ class ChatPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 15),
-                Expanded(flex: 1, child: Icon(Icons.send)),
+                Expanded(
+                  flex: 1,
+                  child: Icon(Icons.send, color: AppColors.accent),
+                ),
               ],
             ),
           ),
