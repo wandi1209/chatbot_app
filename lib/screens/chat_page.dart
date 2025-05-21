@@ -63,15 +63,18 @@ class _ChatPageState extends State<ChatPage> {
         ),
         backgroundColor: AppColors.accent,
         actions: [
-          GestureDetector(
-            onTap: () async {
-              var box = await Hive.openBox('chats');
-              await box.delete('chats');
-              setState(() {
-                chats = [];
-              });
-            },
-            child: Icon(Icons.delete, color: AppColors.primary),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: GestureDetector(
+              onTap: () async {
+                var box = await Hive.openBox('chats');
+                await box.delete('chats');
+                setState(() {
+                  chats = [];
+                });
+              },
+              child: Icon(Icons.delete, color: AppColors.primary),
+            ),
           ),
         ],
       ),
@@ -101,20 +104,20 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 30),
-            height: 60,
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            margin: EdgeInsets.all(20),
             width: double.infinity,
             decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(color: Colors.grey.shade300, width: 2),
-              ),
+              border: Border.all(color: AppColors.accent, width: 2),
+              borderRadius: BorderRadius.circular(15),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
-                  flex: 10,
+                  flex: 7,
                   child: TextField(
+                    cursorColor: AppColors.accent,
                     controller: message,
                     decoration: InputDecoration(
                       hintText: 'Write your message...',
@@ -123,6 +126,7 @@ class _ChatPageState extends State<ChatPage> {
                         fontSize: 14,
                         color: Colors.grey.shade400,
                       ),
+                      focusColor: AppColors.accent,
                       border: InputBorder.none,
                     ),
                   ),
@@ -137,7 +141,18 @@ class _ChatPageState extends State<ChatPage> {
                         message.clear();
                       }
                     },
-                    child: Icon(Icons.send, color: AppColors.accent),
+                    child: CircleAvatar(
+                      backgroundColor: AppColors.accent,
+                      radius: 32,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Icon(
+                          Icons.arrow_upward,
+                          size: 24,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],
