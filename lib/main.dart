@@ -1,7 +1,12 @@
+import 'package:chatbot_app/models/chat_message_model.dart';
 import 'package:chatbot_app/screens/chat_page.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(ChatMessageModelAdapter());
   runApp(MyApp());
 }
 
