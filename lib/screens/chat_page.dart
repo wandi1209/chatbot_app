@@ -1,5 +1,6 @@
 import 'package:chatbot_app/core/configs/theme/app_colors.dart';
 import 'package:chatbot_app/widgets/bot_chat_widget.dart';
+import 'package:chatbot_app/widgets/user_chat_widget.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatelessWidget {
@@ -18,7 +19,14 @@ class ChatPage extends StatelessWidget {
       backgroundColor: AppColors.primary,
       body: Column(
         children: [
-          Padding(padding: EdgeInsets.all(20), child: BotChatWidget()),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: BotChatWidget(),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: UserChatWidget(),
+          ),
           Spacer(),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 30),
