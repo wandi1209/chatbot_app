@@ -1,4 +1,5 @@
-import 'package:chatbot_app/core/theme/colors/app_colors.dart';
+import 'package:chatbot_app/core/configs/assets/app_images.dart';
+import 'package:chatbot_app/core/configs/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class BotChatWidget extends StatelessWidget {
@@ -8,7 +9,7 @@ class BotChatWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(Icons.person),
+        Image.asset(AppImages.chatLogo, width: 40),
         SizedBox(width: 10),
         Container(
           padding: EdgeInsets.all(10),

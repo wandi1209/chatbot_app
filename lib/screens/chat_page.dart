@@ -1,4 +1,4 @@
-import 'package:chatbot_app/core/theme/colors/app_colors.dart';
+import 'package:chatbot_app/core/configs/theme/app_colors.dart';
 import 'package:chatbot_app/widgets/bot_chat_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +13,6 @@ class ChatPage extends StatelessWidget {
           'Chatbot App',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        leading: Icon(Icons.smart_toy, color: Colors.white),
         backgroundColor: AppColors.accent,
       ),
       backgroundColor: AppColors.primary,
