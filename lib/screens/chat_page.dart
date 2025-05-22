@@ -1,5 +1,6 @@
 import 'package:chatbot_app/core/configs/theme/app_colors.dart';
 import 'package:chatbot_app/models/chat_message_model.dart';
+import 'package:chatbot_app/services/api_service.dart';
 import 'package:chatbot_app/widgets/bot_chat_widget.dart';
 import 'package:chatbot_app/widgets/user_chat_widget.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  final apiService = ApiService();
   TextEditingController message = TextEditingController();
   List<ChatMessageModel> chats = [];
 
@@ -48,6 +50,7 @@ class _ChatPageState extends State<ChatPage> {
 
     await box.put('chats', savedChats);
 
+    await apiService.prompting(message);
     setState(() {
       chats = savedChats;
     });
