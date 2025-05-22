@@ -17,6 +17,7 @@ class _ChatPageState extends State<ChatPage> {
   final apiService = ApiService();
   TextEditingController message = TextEditingController();
   List<ChatMessageModel> chats = [];
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -25,8 +26,14 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _openHiveBox() async {
+    setState(() {
+      isLoading = true;
+    });
     var box = await Hive.openBox('chats');
     chats = box.get('chats')?.cast<ChatMessageModel>() ?? [];
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -36,6 +43,9 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _sendPrompt(String message) async {
+    setState(() {
+      isLoading = true;
+    });
     var box = await Hive.openBox('chats');
     List<ChatMessageModel> savedChats =
         box.get('chats')?.cast<ChatMessageModel>() ?? [];
@@ -52,6 +62,7 @@ class _ChatPageState extends State<ChatPage> {
 
     await apiService.prompting(message);
     setState(() {
+      isLoading = false;
       chats = savedChats;
     });
   }
@@ -139,21 +150,33 @@ class _ChatPageState extends State<ChatPage> {
                   flex: 1,
                   child: GestureDetector(
                     onTap: () {
-                      if (message.text.trim().isNotEmpty) {
+                      if (message.text.trim().isNotEmpty && !isLoading) {
                         _sendPrompt(message.text.trim());
                         message.clear();
                       }
                     },
                     child: CircleAvatar(
-                      backgroundColor: AppColors.accent,
+                      backgroundColor:
+                          isLoading ? AppColors.dark : AppColors.accent,
                       radius: 32,
                       child: Padding(
                         padding: const EdgeInsets.all(5),
-                        child: Icon(
-                          Icons.arrow_upward,
-                          size: 24,
-                          color: AppColors.primary,
-                        ),
+                        child:
+                            isLoading
+                                ? SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                    padding: EdgeInsets.all(3),
+                                  ),
+                                )
+                                : Icon(
+                                  Icons.arrow_upward,
+                                  size: 24,
+                                  color: AppColors.primary,
+                                ),
                       ),
                     ),
                   ),
