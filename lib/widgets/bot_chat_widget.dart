@@ -1,6 +1,7 @@
 import 'package:chatbot_app/core/configs/assets/app_images.dart';
 import 'package:chatbot_app/core/configs/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class BotChatWidget extends StatelessWidget {
   final String message;
@@ -22,7 +23,14 @@ class BotChatWidget extends StatelessWidget {
             color: AppColors.secondary,
             borderRadius: BorderRadius.circular(5),
           ),
-          child: Text(message, style: TextStyle(fontSize: 12)),
+          child: MarkdownBody(
+            data: message,
+            styleSheet: MarkdownStyleSheet(
+              p: TextStyle(fontSize: 12, color: Colors.black),
+              strong: TextStyle(fontWeight: FontWeight.bold),
+              blockSpacing: 6,
+            ),
+          ),
         ),
       ],
     );
