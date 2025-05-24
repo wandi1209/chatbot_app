@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:chatbot_app/models/chat_message_model.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,24 +10,24 @@ class ApiService {
   Future<ChatMessageModel?> prompting(String question) async {
     try {
       final response = await http.post(
-        Uri.parse("https://api.openai.com/v1/chat/completions"),
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.authorizationHeader:
-              'Bearer ${dotenv.env['OPENAI_API_KEY']}',
-        },
+        Uri.parse(
+          "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${dotenv.env['GEMINI_API_KEY']}",
+        ),
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
         body: jsonEncode({
-          "model": "gpt-3.5-turbo",
-          "messages": [
-            {"role": "user", "content": question},
+          "contents": [
+            {
+              "parts": [
+                {"text": question},
+              ],
+            },
           ],
         }),
       );
-
-      debugPrint('${response.body}');
-
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      debugPrint('$data');
       return ChatMessageModel(
-        message: response.body,
+        message: data['candidates'][0]['content']['parts'][0]['text'],
         isBot: true,
         timestamp: DateTime.now(),
       );

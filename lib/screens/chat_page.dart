@@ -50,17 +50,22 @@ class _ChatPageState extends State<ChatPage> {
     List<ChatMessageModel> savedChats =
         box.get('chats')?.cast<ChatMessageModel>() ?? [];
 
-    savedChats.add(
-      ChatMessageModel(
-        message: message,
-        isBot: false,
-        timestamp: DateTime.now(),
-      ),
+    // User message
+    final userMessage = ChatMessageModel(
+      message: message,
+      isBot: false,
+      timestamp: DateTime.now(),
     );
 
+    savedChats.add(userMessage);
     await box.put('chats', savedChats);
 
-    await apiService.prompting(message);
+    final botResponse = await apiService.prompting(message);
+    if (botResponse != null) {
+      savedChats.add(botResponse);
+      await box.put('chats', savedChats);
+    }
+
     setState(() {
       isLoading = false;
       chats = savedChats;
