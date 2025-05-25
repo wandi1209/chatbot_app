@@ -16,6 +16,8 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final apiService = ApiService();
   TextEditingController message = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
   List<ChatMessageModel> chats = [];
   bool isLoading = false;
 
@@ -23,6 +25,13 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     _openHiveBox();
     super.initState();
+  }
+
+  void scroll() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(Duration(microseconds: 300));
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    });
   }
 
   void _openHiveBox() async {
@@ -34,6 +43,7 @@ class _ChatPageState extends State<ChatPage> {
     setState(() {
       isLoading = false;
     });
+    scroll();
   }
 
   @override
@@ -45,6 +55,7 @@ class _ChatPageState extends State<ChatPage> {
   void _sendPrompt(String message) async {
     setState(() {
       isLoading = true;
+      scroll();
     });
     var box = await Hive.openBox('chats');
     List<ChatMessageModel> savedChats =
@@ -69,6 +80,7 @@ class _ChatPageState extends State<ChatPage> {
     setState(() {
       isLoading = false;
       chats = savedChats;
+      scroll();
     });
   }
 
@@ -102,6 +114,7 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           Expanded(
             child: ListView.builder(
+              controller: _scrollController,
               itemCount: chats.length,
               itemBuilder: (context, index) {
                 ChatMessageModel data = chats[index];
