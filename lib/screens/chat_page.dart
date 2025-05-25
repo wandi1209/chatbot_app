@@ -29,8 +29,14 @@ class _ChatPageState extends State<ChatPage> {
 
   void scroll() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(Duration(microseconds: 300));
-      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      if (_scrollController.hasClients &&
+          _scrollController.position.maxScrollExtent > 0) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeOut,
+        );
+      }
     });
   }
 
@@ -42,13 +48,14 @@ class _ChatPageState extends State<ChatPage> {
     chats = box.get('chats')?.cast<ChatMessageModel>() ?? [];
     setState(() {
       isLoading = false;
+      scroll();
     });
-    scroll();
   }
 
   @override
   void dispose() {
     message.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
