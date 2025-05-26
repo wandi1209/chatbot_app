@@ -29,14 +29,11 @@ class _ChatPageState extends State<ChatPage> {
 
   void scroll() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients &&
-          _scrollController.position.maxScrollExtent > 0) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 500),
-          curve: Curves.easeOut,
-        );
-      }
+      Future.delayed(Duration(milliseconds: 300), () {
+        if (_scrollController.hasClients) {
+          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        }
+      });
     });
   }
 
@@ -48,8 +45,8 @@ class _ChatPageState extends State<ChatPage> {
     chats = box.get('chats')?.cast<ChatMessageModel>() ?? [];
     setState(() {
       isLoading = false;
-      scroll();
     });
+    scroll();
   }
 
   @override
@@ -87,8 +84,8 @@ class _ChatPageState extends State<ChatPage> {
     setState(() {
       isLoading = false;
       chats = savedChats;
-      scroll();
     });
+    scroll();
   }
 
   @override
@@ -123,6 +120,7 @@ class _ChatPageState extends State<ChatPage> {
             child: ListView.builder(
               controller: _scrollController,
               itemCount: chats.length,
+              physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 ChatMessageModel data = chats[index];
                 if (chats.isEmpty) {
